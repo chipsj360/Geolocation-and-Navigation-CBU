@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="animate" type="id"></item>
+    <item name="duration_toggle" type="id"></item>
+    <item name="duration_bar" type="id"></item>
+    <item name="tap_text" type="id"></item>
+    <item name="camera_text" type="id"></item>
+</resources>

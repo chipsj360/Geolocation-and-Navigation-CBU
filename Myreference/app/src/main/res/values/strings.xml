@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">location and navigation</string>
+    <string name="title_activity_maps">location and navigation</string>
+    <string name="home">home</string>
+    <string name="gallery">gallery</string>
+    <string name="search_location">Search Location</string>
+    <string name="search">Search</string>
+    <string name="action_settings">action</string>
+    <string name="menu_search">menu_search</string>
+    <string name="map_not_ready">map_not_ready</string>
+</resources>
