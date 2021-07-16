@@ -29,7 +29,7 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 
 public class MainActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener,onMapReadyCallback {
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     Location mLocation;
     TextView latLng;

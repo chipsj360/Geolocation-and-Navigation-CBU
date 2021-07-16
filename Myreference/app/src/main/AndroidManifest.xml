@@ -43,8 +43,6 @@
                 android:name="android.app.default_searchable"
                 android:value=".SearchResultsActivity" />
         </activity>
-        <activity android:name=".CameraDemoActivity"
-            android:theme="@style/Theme.MyReference" />
 
     </application>
 
