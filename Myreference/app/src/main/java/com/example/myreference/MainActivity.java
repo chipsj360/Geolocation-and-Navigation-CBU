@@ -201,6 +201,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
 
             case ALL_PERMISSIONS_RESULT:

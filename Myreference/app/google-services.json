@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "96690021501",
+    "project_id": "cbu-navigation-system-23af2",
+    "storage_bucket": "cbu-navigation-system-23af2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:96690021501:android:7b6619c48432e19c923d14",
+        "android_client_info": {
+          "package_name": "com.example.myreference"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "96690021501-rs3tdi5l8fvij9qaq1t1c7ll35o1n3q9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC7S6aO5oz9BC6gidLgHn69FnkJO7WMns"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "96690021501-rs3tdi5l8fvij9qaq1t1c7ll35o1n3q9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

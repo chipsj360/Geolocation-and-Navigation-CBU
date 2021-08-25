@@ -32,6 +32,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
@@ -41,9 +43,17 @@ import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerDragListener, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener,TaskLoadedCallback{
 
+
+
+
+    private Polyline currentPolyline;
+
+    private MarkerOptions place1, place2,place3,place4,place5,place6;
+    /////////
     private static final String TAG = "MapsActivity";
+
     private GoogleApiClient client;//
     private LocationRequest locationRequest;//
     private Location lastlocation;
@@ -66,6 +76,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         geocoder = new Geocoder(this);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        place1 = new MarkerOptions().position(new LatLng(-12.80548, 28.2394)).title("cbu");
+        place2 = new MarkerOptions().position(new LatLng(-12.79799, 28.20942)).title("kitwe central hospital");
+        place3 = new MarkerOptions().position(new LatLng(-12.80912, 28.22976)).title("progress hospital");
+        place4 = new MarkerOptions().position(new LatLng(-12.78879, 28.20747)).title("Buchi clinic");
+        place5 = new MarkerOptions().position(new LatLng(12.8201, 28.2044)).title("Kamitondo");
+        place6 = new MarkerOptions().position(new LatLng(-12.820503, 28.212100)).title("Kitwe city council");
+
     }
 
     /**
@@ -100,7 +118,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         mMap = googleMap;
+///////////////////////
+        Log.d("mylog", "Added Markers");
+        mMap.addMarker(place1);
+        mMap.addMarker(place2);
+        mMap.addMarker(place3);
+        mMap.addMarker(place4);
+        mMap.addMarker(place5);
 
+        mMap.addMarker(place6);
+        //
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         mMap.setOnMapLongClickListener(this);
@@ -143,6 +170,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
     }
     protected synchronized void bulidGoogleApiClient() {
         client = new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this).addApi(LocationServices.API).build();
@@ -259,23 +288,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch(requestCode)
-        {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
             case REQUEST_LOCATION_CODE:
-                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                {
-                    if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) !=  PackageManager.PERMISSION_GRANTED)
-                    {
-                        if(client == null)
-                        {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        if (client == null) {
                             bulidGoogleApiClient();
                         }
                         mMap.setMyLocationEnabled(true);
                     }
-                }
-                else
-                {
-                    Toast.makeText(this,"Permission Denied" , Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_LONG).show();
                 }
         }
     }
@@ -294,6 +318,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 */
     public void onClick(View v)
     {
+        new FetchURL(MapsActivity.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "driving"), "driving");
+
         Object dataTransfer[] = new Object[2];
         GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
 
@@ -343,7 +369,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-            case R.id.B_to:
+
         }
     }
 
@@ -406,6 +432,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    }
+
+    @Override
+    public void onTaskDone(Object... values) {
+        if (currentPolyline != null)
+            currentPolyline.remove();
+        currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+    }
+
+    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        // Mode
+        String mode = "mode=" + directionMode;
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + mode;
+        // Output format
+        String output = "json";
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getString(R.string.google_maps_key);
+        return url;
     }
 }
 
